@@ -21,7 +21,7 @@ const Login = () => {
         <div className='form-container'>
           {
             loginSignup ? (
-              <form onSubmit={handleSubmit(submit())}>
+              <form onSubmit={handleSubmit(submit}>
               <h2>Welcome! enter you email and password to continue</h2>
               <article>
                 <b>Test data</b>
@@ -34,7 +34,7 @@ const Login = () => {
              <p>Don't have an account?<span onClick={() => changeSection()}>Sign up</span></p>
           </form>
             ) : (
-              <form onSubmit={handleSubmit(userRegister())}>
+              <form onSubmit={handleSubmit(userRegister)}>
               <h2>Sign up</h2>
             <input type='email' placeholder='Email' {...register('email')}/>
             <input type='text' placeholder='Fisrt Name' {...register('firstName')}/>
