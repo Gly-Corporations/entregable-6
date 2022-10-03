@@ -66,8 +66,6 @@ const Home = () => {
             }
         }
     }
-    
-    console.log('Hello')
 
     return (
         <div>

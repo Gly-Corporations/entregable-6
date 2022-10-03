@@ -27,23 +27,50 @@ const Product = () => {
         }
     }
 
+    const productSelected = idSelected => {
+        navigate(`/product/${idSelected}`)
+        window.scroll({
+            top: 0,
+            behavior: 'smooth'
+          });
+    }
 
 
     return (
         <div>
-            <h2>Product number: {id}</h2>
-            <article>
-                <button onClick={() => changeImg('prev')}>Prev</button>
-                <img src={productCurrent?.productImgs[numberImg]} alt="Photo one of the Product" />
-                <button onClick={() => changeImg('next')}>Next</button>
-                {productCurrent?.title}
-                {productCurrent?.description}
-                $ {productCurrent?.price}
-            </article>
+            <ul className='list-link'>
+                <li onClick={() => navigate('/')} className='list-item-home'>Home</li>
+                <li className='list-item-title'>{productCurrent?.title}</li>
+            </ul>
+            <section className='detail-current-product'>
+                <article>
+                    <div className='carousel'>
+                        <button className='material-symbols-outlined' onClick={() => changeImg('prev')}>chevron_left</button>
+                        <img src={productCurrent?.productImgs[numberImg]} alt="Photo one of the Product" />
+                        <button className='material-symbols-outlined' onClick={() => changeImg('next')}>chevron_right</button>
+                    </div>
+                    <h3>{productCurrent?.title}</h3>
+                    <div className='price-quantity'>
+                        <div>
+                            <p>Price</p>
+                            <b>$ {productCurrent?.price}</b>
+                        </div>
+                        <div className='quantity'>
+                            <p>Quantity</p>
+                            <button className='material-symbols-outlined'>remove</button>
+                            <span>5</span>
+                            <button className='material-symbols-outlined'>add</button>
+                        </div>
+                        <button className='addToCart-currentProduct'>Add to cart <span className='material-symbols-outlined'>shopping_cart</span></button>
+                    </div>
+                    <p className='detail-product'>{productCurrent?.description}</p>
+                </article>
+            </section>
             <section className='container-products'>
+                <h3>Suggestions</h3>
                 {
                     productsCategories.map(product => (
-                        <article className='product-card' key={product.id} onClick={() => navigate(`/product/${product.id}`)}>
+                        <article className='product-card' key={product.id} onClick={() => productSelected(product.id)}>
                             <div className='img-product'>
                                 <img src={product.productImgs?.[0]} alt="" />
                             </div>
