@@ -21,7 +21,7 @@ const Login = () => {
         <div className='form-container'>
           {
             loginSignup ? (
-              <form onSubmit={handleSubmit=(submit())}>
+              <form onSubmit={handleSubmit(submit())}>
               <h2>Welcome! enter you email and password to continue</h2>
               <article>
                 <b>Test data</b>
