@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { setLoader } from '../store/slices/loader.slice';
 
 const Home = () => {
     const allProducts = useSelector(state => state.products)
@@ -67,6 +68,9 @@ const Home = () => {
         }
     }
 
+    const dispatch = useDispatch()
+
+
     return (
         <div>
             <aside className='aside-search'>
@@ -102,7 +106,7 @@ const Home = () => {
                     productsList.map(product => (
                         <article className='product-card' key={product.id} onClick={() => navigate(`/product/${product.id}`)}>
                             <div className='img-product'>
-                                <img src={product.productImgs?.[0]} alt="" />
+                                <img src={product.productImgs?.[0]} alt="photo" onLoad={() => dispatch(setLoader(false))} />
                             </div>
                             <div className='description-product'>
                                 <h4>{product.title}</h4>

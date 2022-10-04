@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { setLoader } from '../store/slices/loader.slice';
 
 const Product = () => {
     const { id } = useParams();
     const navigate = useNavigate()
     const products = useSelector(state => state.products)
     const [numberImg, setNumberImg] = useState(0)
+    const dispatch = useDispatch()
 
     const productCurrent = products.find(product => product.id === Number(id))
     const productsCategories = products.filter(product => product.category.id === productCurrent.category.id)
@@ -46,7 +48,7 @@ const Product = () => {
                 <article>
                     <div className='carousel'>
                         <button className='material-symbols-outlined' onClick={() => changeImg('prev')}>chevron_left</button>
-                        <img src={productCurrent?.productImgs[numberImg]} alt="Photo one of the Product" />
+                        <img src={productCurrent?.productImgs[numberImg]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
                         <button className='material-symbols-outlined' onClick={() => changeImg('next')}>chevron_right</button>
                     </div>
                     <h3>{productCurrent?.title}</h3>
@@ -72,7 +74,7 @@ const Product = () => {
                     productsCategories.map(product => (
                         <article className='product-card' key={product.id} onClick={() => productSelected(product.id)}>
                             <div className='img-product'>
-                                <img src={product.productImgs?.[0]} alt="" />
+                                <img src={product.productImgs?.[0]} alt="" onLoad={() => dispatch(setLoader(false))} />
                             </div>
                             <div className='description-product'>
                                 <h4>{product.title}</h4>
