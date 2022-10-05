@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const MyNavbar = () => {
     const token = window.localStorage.getItem('token')
-    
+
     const logout = () => {
         window.localStorage.setItem('token', '')
         window.location.reload()
@@ -20,7 +20,7 @@ const MyNavbar = () => {
                         <Nav.Link to='/purchases' as={Link}><span className="material-symbols-outlined">inventory_2</span></Nav.Link>
                         <Nav.Link ><span className="material-symbols-outlined">shopping_cart</span></Nav.Link>
                         {
-                            token.length > 1 && <Nav.Link onClick={logout}><span className="material-symbols-outlined">logout</span></Nav.Link>
+                            token !== '' && <Nav.Link onClick={logout}><span className="material-symbols-outlined">logout</span></Nav.Link>
                         }
                     </Nav>
                 </Container>
