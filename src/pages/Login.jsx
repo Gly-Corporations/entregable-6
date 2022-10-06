@@ -13,6 +13,7 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   dispatch(setLoader(false))
+  const login = window.localStorage.getItem('token')
 
 
   const resetData = () => {
@@ -24,11 +25,12 @@ const Login = () => {
       .then(res => {
         window.localStorage.setItem('token', res.data.data.token)
         resetData()
-        alert('login')
+        dispatch(setTitleModal('Successful login'))
+        dispatch(setHandleShow(true))
         navigate('/')
       })
       .catch(error => {
-        if(error.response?.status === 404){
+        if (error.response?.status === 404) {
           alert(error.response.data.message)
         }
         console.log(error.response)
@@ -41,6 +43,7 @@ const Login = () => {
         alert('User Register')
         resetData()
       })
+      .catch(error => console.log(error))
   }
 
   const changeSection = () => {
@@ -57,45 +60,59 @@ const Login = () => {
     }
   }
 
-
+  const logout = () => {
+    window.localStorage.setItem('token', '')
+    window.location.reload()
+}
 
 
   return (
-    <div className='form-container'>
+    <>
       {
-        loginSignup ? (
-          <form onSubmit={handleSubmit(submit)}>
-            <h2>Welcome! enter you email and password to continue</h2>
-            <article className='test-data'>
-              <b>Test data</b>
-              <p>mason@gmail.com</p>
-              <p>mason1234</p>
-            </article>
-            <input type='email' placeholder='Email' {...register('email')} />
-            <div className='input-password'>
-              <input type={typeInput} placeholder='Password' {...register('password')} />
-              <span onClick={() => isVisible()} className='material-symbols-outlined is-visible'>{visibility}</span>
-            </div>
-            <button>Login</button>
-            <p>Don't have an account? <span onClick={() => changeSection()}>Sign up</span></p>
-          </form>
+        login ? (
+          <div className='login-successful'>
+            <h4>Luis Uzcategui</h4>
+            <a href="#" onClick={logout}>Log out</a>
+          </div>
         ) : (
-          <form onSubmit={handleSubmit(userRegister)}>
-            <h2>Sign up</h2>
-            <input type='email' placeholder='Email' {...register('email')} />
-            <input type='text' placeholder='Fisrt Name' {...register('firstName')} />
-            <input type='text' placeholder='Last Name' {...register('lastName')} />
-            <div className='input-password'>
-              <input type={typeInput} placeholder='Password' {...register('password')} />
-              <span onClick={() => isVisible()} className='material-symbols-outlined is-visible'>{visibility}</span>
-            </div>
-            <input type='text' placeholder='Phone Number' {...register('phone')} />
-            <button>Sign up</button>
-            <p>Already have an account? <span onClick={() => changeSection()}>Login</span></p>
-          </form>
+          <div className='form-container'>
+            {
+              loginSignup ? (
+                <form onSubmit={handleSubmit(submit)}>
+                  <h2>Welcome! enter you email and password to continue</h2>
+                  <article className='test-data'>
+                    <b>Test data</b>
+                    <p>mason@gmail.com</p>
+                    <p>mason1234</p>
+                  </article>
+                  <input type='email' placeholder='Email' {...register('email')} />
+                  <div className='input-password'>
+                    <input type={typeInput} placeholder='Password' {...register('password')} />
+                    <span onClick={() => isVisible()} className='material-symbols-outlined is-visible'>{visibility}</span>
+                  </div>
+                  <button>Login</button>
+                  <p>Don't have an account? <span onClick={() => changeSection()}>Sign up</span></p>
+                </form>
+              ) : (
+                <form onSubmit={handleSubmit(userRegister)}>
+                  <h2>Sign up</h2>
+                  <input type='email' placeholder='Email' {...register('email')} />
+                  <input type='text' placeholder='Fisrt Name' {...register('firstName')} />
+                  <input type='text' placeholder='Last Name' {...register('lastName')} />
+                  <div className='input-password'>
+                    <input type={typeInput} placeholder='Password' {...register('password')} />
+                    <span onClick={() => isVisible()} className='material-symbols-outlined is-visible'>{visibility}</span>
+                  </div>
+                  <input type='text' placeholder='Phone Number' {...register('phone')} />
+                  <button>Sign up</button>
+                  <p>Already have an account? <span onClick={() => changeSection()}>Login</span></p>
+                </form>
+              )
+            }
+          </div>
         )
       }
-    </div>
+    </>
   );
 };
 

@@ -462,7 +462,7 @@ li {
 
 .btn-delete-item {
     position: absolute;
-    top: 1rem;
+    bottom: 4rem;
     right: 1rem;
     color: var(--first-color);
     padding: .5rem;
@@ -495,4 +495,22 @@ li {
     background-color: var(--first-color);
     margin: auto;
     color: var(--white);
+}
+
+.login-successful {
+    margin: auto;
+    padding: 2rem;
+    box-shadow: 0 0 15px var(--blackT);
+    border-radius: 1rem;
+    width: 80%;
+    height: calc(100vh - 270px);
+    display: grid;
+    align-items: center;
+    text-align: center;
+}
+
+.login-successful a {
+    color: var(--first-color);
+    text-decoration: none;
+    cursor: pointer;
 }

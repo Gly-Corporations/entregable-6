@@ -2,16 +2,23 @@ import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { getAddToCart, getUpdateToCart } from '../store/slices/cartList.slice';
 import { setLoader } from '../store/slices/loader.slice';
+import { setHandleShow } from '../store/slices/handleShow.slice'
+import { setTitleModal } from '../store/slices/titleModal.slice'
 
 const Product = () => {
+    /* window.scrollTo(0, 0) */
     const { id } = useParams();
     const navigate = useNavigate()
     const products = useSelector(state => state.products)
     const dispatch = useDispatch()
+    const [quantity, setQuantity] = useState(1)
+    const cartProducts = useSelector(state => state.cart)
 
     const productCurrent = products.find(product => product.id === Number(id))
     const productsCategories = products.filter(product => product.category.id === productCurrent.category.id)
+    const cartProductCurrent = cartProducts.find(product => product.id === Number(id))
 
     const productSelected = idSelected => {
         navigate(`/product/${idSelected}`)
@@ -21,8 +28,24 @@ const Product = () => {
         });
     }
 
-    window.scrollTo(0, 0)
+    const addProductToCart = () => {
+        const item = {
+            "id": id
+        }
 
+        if (cartProductCurrent !== undefined) {
+            item.newQuantity = quantity + Number(cartProductCurrent.productsInCart.quantity)
+            console.log(item)
+            dispatch(getUpdateToCart(item))
+            dispatch(setTitleModal('Successful update'))
+            dispatch(setHandleShow(true))
+        } else {
+            item.quantity = quantity
+            dispatch(getAddToCart(item))
+            dispatch(setTitleModal('The produc was added successfully'))
+            dispatch(setHandleShow(true))
+        }
+    }
 
     return (
         <div>
@@ -51,11 +74,11 @@ const Product = () => {
                         </div>
                         <div className='quantity'>
                             <p>Quantity</p>
-                            <button className='material-symbols-outlined'>remove</button>
-                            <span>5</span>
-                            <button className='material-symbols-outlined'>add</button>
+                            <button disabled={quantity === 1} onClick={() => setQuantity(quantity - 1)} className='material-symbols-outlined'>remove</button>
+                            <span>{quantity}</span>
+                            <button onClick={() => setQuantity(quantity + 1)} className='material-symbols-outlined'>add</button>
                         </div>
-                        <button className='addToCart-currentProduct'>Add to cart <span className='material-symbols-outlined'>shopping_cart</span></button>
+                        <button onClick={() => addProductToCart()} className='addToCart-currentProduct'>Add to cart <span className='material-symbols-outlined'>shopping_cart</span></button>
                     </div>
                     <p className='detail-product'>{productCurrent?.description}</p>
                 </article>

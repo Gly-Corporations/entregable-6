@@ -12,6 +12,7 @@ import Purchases from './pages/Purchases'
 import { getCategoryThunk } from './store/slices/category.slice'
 import { getProductsThunk } from './store/slices/products.slice';
 import Footer from './components/Footer'
+import ModalAlert from './components/ModalAlert'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <HashRouter>
+      <ModalAlert />
       {
         loader && <LoadingScreen />
       }

@@ -3,7 +3,9 @@ import React, { useEffect } from 'react';
 import { ListGroup, Offcanvas } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getSetCart } from '../store/slices/cartList.slice';
+import { getSetCart, purchasesCartThunk } from '../store/slices/cartList.slice';
+import { setHandleShow } from '../store/slices/handleShow.slice';
+import { setTitleModal } from '../store/slices/titleModal.slice';
 import getConfig from '../utils/getConfig';
 
 const Cart = ({ show, handleClose }) => {
@@ -28,8 +30,18 @@ const Cart = ({ show, handleClose }) => {
 
     const deleteItem = id => {
         axios.delete(`https://ecommerce-api-react.herokuapp.com/api/v1/cart/${id}`, getConfig())
-            .then(() => dispatch(getSetCart()))
+            .then(() => {
+                dispatch(getSetCart())
+                dispatch(setTitleModal('Removed product'))
+                dispatch(setHandleShow(true))
+            })
             .catch(error => console.log(error))
+    }
+
+    const pucharse = () => {
+        dispatch(purchasesCartThunk())
+        dispatch(setTitleModal('Successfull purchase'))
+        dispatch(setHandleShow(true))
     }
 
     return (
@@ -58,7 +70,7 @@ const Cart = ({ show, handleClose }) => {
                         <span>Total:</span>
                         <b>$ {total()}</b>
                     </article>
-                    <button className='btn-buy'>Checkout</button>
+                    <button className='btn-buy' onClick={pucharse}>Checkout</button>
                 </section>
             </Offcanvas.Body>
         </Offcanvas>
