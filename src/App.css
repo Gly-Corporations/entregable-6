@@ -311,21 +311,16 @@ li {
     margin-left: -1em;
 }
 
-.carousel {
-    display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
-    grid-template-rows: 300px;
-    align-items: center;
-    margin-bottom: 3rem;
+.carousel-inner {
+    width: 100%;
+    height: 370px;
+    padding: 2rem 3.5rem;
 }
 
-.carousel button {
-    margin: auto;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    color: var(--white);
-    background-color: var(--first-color);
+.carousel-inner div img {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
 }
 
 .price-quantity {
@@ -388,11 +383,21 @@ li {
     grid-template-columns: .5fr 2fr .5fr 1fr;
     align-items: center;
     text-align: center;
+    cursor: pointer;
 }
 
 .purchases-product p,
 .purchases-product b {
     margin: auto;
+}
+
+.purchases-product-quantity {
+    width: 40px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: .5px solid var(--blackT);
 }
 
 .purchases-product img {
@@ -418,4 +423,76 @@ li {
     display: grid;
     gap: 1.5rem;
     padding: 0 .5rem;
+}
+
+.cart-container {
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 5.5rem;
+}
+
+.cart-container li {
+    width: 100%;
+    padding: 1rem;
+    border: .5px solid var(--blackT);
+    border-radius: .3rem;
+    position: relative;
+}
+
+.p-brand {
+    margin: 0;
+    opacity: .6;
+}
+
+.b-quantity {
+    width: 40px;
+    border: .5px solid var(--blackT);
+    display: block;
+    text-align: center;
+    padding: .3rem;
+    margin-top: 1rem;
+}
+
+.p-total {
+    text-align: right;
+}
+
+.btn-delete-item {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: var(--first-color);
+    padding: .5rem;
+}
+
+.section-total {
+    width: 100%;
+    height: 5.5rem;
+    background-color: var(--white);
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    padding: 1rem .5rem .5rem;
+    border-top: .5px solid var(--blackT);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .5rem;
+}
+
+.container-total {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-buy {
+    width: 90%;
+    padding: .3rem;
+    background-color: var(--first-color);
+    margin: auto;
+    color: var(--white);
 }

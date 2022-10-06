@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Carousel } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setLoader } from '../store/slices/loader.slice';
@@ -7,35 +8,20 @@ const Product = () => {
     const { id } = useParams();
     const navigate = useNavigate()
     const products = useSelector(state => state.products)
-    const [numberImg, setNumberImg] = useState(0)
     const dispatch = useDispatch()
 
     const productCurrent = products.find(product => product.id === Number(id))
     const productsCategories = products.filter(product => product.category.id === productCurrent.category.id)
-
-    const changeImg = change => {
-        if (change === 'prev') {
-            if (numberImg === 0) {
-                setNumberImg(2)
-            } else {
-                setNumberImg(numberImg - 1)
-            }
-        } else {
-            if (numberImg === (productCurrent.productImgs.length - 1)) {
-                setNumberImg(0)
-            } else {
-                setNumberImg(numberImg + 1)
-            }
-        }
-    }
 
     const productSelected = idSelected => {
         navigate(`/product/${idSelected}`)
         window.scroll({
             top: 0,
             behavior: 'smooth'
-          });
+        });
     }
+
+    window.scrollTo(0, 0)
 
 
     return (
@@ -46,11 +32,17 @@ const Product = () => {
             </ul>
             <section className='detail-current-product'>
                 <article>
-                    <div className='carousel'>
-                        <button className='material-symbols-outlined' onClick={() => changeImg('prev')}>chevron_left</button>
-                        <img src={productCurrent?.productImgs[numberImg]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
-                        <button className='material-symbols-outlined' onClick={() => changeImg('next')}>chevron_right</button>
-                    </div>
+                    <Carousel variant='dark'>
+                        <Carousel.Item interval={2000}>
+                            <img className="d-block w-100" src={productCurrent?.productImgs[0]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
+                        </Carousel.Item>
+                        <Carousel.Item interval={2000}>
+                            <img className="d-block w-100" src={productCurrent?.productImgs[1]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
+                        </Carousel.Item>
+                        <Carousel.Item interval={2000}>
+                            <img className="d-block w-100" src={productCurrent?.productImgs[2]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
+                        </Carousel.Item>
+                    </Carousel>
                     <h3>{productCurrent?.title}</h3>
                     <div className='price-quantity'>
                         <div>
