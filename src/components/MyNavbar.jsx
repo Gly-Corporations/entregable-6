@@ -27,7 +27,7 @@ const MyNavbar = () => {
                 <Container>
                     <Navbar.Brand to='/' as={Link}>Ecommerce</Navbar.Brand>
                     <Nav>
-                        <Nav.Link to='/login' as={Link}><span className="material-symbols-outlined">person</span></Nav.Link>
+                        <Nav.Link to='/login' as={Link}><span className={`material-symbols-outlined ${token !== '' && 'login-user'}`}>person</span></Nav.Link>
                         <Nav.Link to='/purchases' as={Link}><span className="material-symbols-outlined">inventory_2</span></Nav.Link>
                         <Nav.Link onClick={handleShow} ><span className="material-symbols-outlined">shopping_cart</span></Nav.Link>
                         {

@@ -514,3 +514,8 @@ li {
     text-decoration: none;
     cursor: pointer;
 }
+
+.login-user {
+    color: #00ff00;
+    box-shadow: 0 0 20px #000000;
+}

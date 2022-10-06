@@ -14,6 +14,8 @@ const Login = () => {
   const dispatch = useDispatch()
   dispatch(setLoader(false))
   const login = window.localStorage.getItem('token')
+  const fisrtName = window.localStorage.getItem('firstName')
+  const lastName = window.localStorage.getItem('lastName')
 
 
   const resetData = () => {
@@ -24,6 +26,8 @@ const Login = () => {
     axios.post('https://ecommerce-api-react.herokuapp.com/api/v1/users/login', userData)
       .then(res => {
         window.localStorage.setItem('token', res.data.data.token)
+        window.localStorage.setItem('firstName', res.data.data.user.firstName)
+        window.localStorage.setItem('lastName', res.data.data.user.lastName)
         resetData()
         dispatch(setTitleModal('Successful login'))
         dispatch(setHandleShow(true))
@@ -71,7 +75,7 @@ const Login = () => {
       {
         login ? (
           <div className='login-successful'>
-            <h4>Luis Uzcategui</h4>
+            <h4>Hi! {fisrtName} {lastName} welcome</h4>
             <a href="#" onClick={logout}>Log out</a>
           </div>
         ) : (

@@ -8,17 +8,19 @@ import { setHandleShow } from '../store/slices/handleShow.slice'
 import { setTitleModal } from '../store/slices/titleModal.slice'
 
 const Product = () => {
-    /* window.scrollTo(0, 0) */
     const { id } = useParams();
     const navigate = useNavigate()
     const products = useSelector(state => state.products)
     const dispatch = useDispatch()
     const [quantity, setQuantity] = useState(1)
     const cartProducts = useSelector(state => state.cart)
+    const token = window.localStorage.getItem('token')
 
     const productCurrent = products.find(product => product.id === Number(id))
     const productsCategories = products.filter(product => product.category.id === productCurrent.category.id)
     const cartProductCurrent = cartProducts.find(product => product.id === Number(id))
+
+    window.scrollTo(0, 0)
 
     const productSelected = idSelected => {
         navigate(`/product/${idSelected}`)
@@ -29,21 +31,25 @@ const Product = () => {
     }
 
     const addProductToCart = () => {
-        const item = {
-            "id": id
-        }
+        if (token !== '') {
+            const item = {
+                "id": id
+            }
 
-        if (cartProductCurrent !== undefined) {
-            item.newQuantity = quantity + Number(cartProductCurrent.productsInCart.quantity)
-            console.log(item)
-            dispatch(getUpdateToCart(item))
-            dispatch(setTitleModal('Successful update'))
-            dispatch(setHandleShow(true))
+            if (cartProductCurrent !== undefined) {
+                item.newQuantity = quantity + Number(cartProductCurrent.productsInCart.quantity)
+                console.log(item)
+                dispatch(getUpdateToCart(item))
+                dispatch(setTitleModal('Successful update'))
+                dispatch(setHandleShow(true))
+            } else {
+                item.quantity = quantity
+                dispatch(getAddToCart(item))
+                dispatch(setTitleModal('The produc was added successfully'))
+                dispatch(setHandleShow(true))
+            }
         } else {
-            item.quantity = quantity
-            dispatch(getAddToCart(item))
-            dispatch(setTitleModal('The produc was added successfully'))
-            dispatch(setHandleShow(true))
+            navigate('/login')
         }
     }
 
