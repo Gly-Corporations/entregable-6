@@ -11,8 +11,8 @@ const Home = () => {
     const [productsList, setProductsList] = useState([])
     const [value, setValue] = useState('')
     const [showFilters, setShowFilters] = useState('')
-    const [showFilterPrice, setShowFilterPrice] = useState('show-filters')
-    const [showFilterCategory, setShowFilterCategory] = useState('show-filters')
+    const [showFilterPrice, setShowFilterPrice] = useState('')
+    const [showFilterCategory, setShowFilterCategory] = useState('')
     const { register, handleSubmit, reset } = useForm()
 
 
@@ -72,7 +72,7 @@ const Home = () => {
 
 
     return (
-        <div>
+        <div className='main'>
             <aside className='aside-search'>
                 <form className='form-search'>
                     <input className='input-search-name' value={value} onChange={e => setValue(e.target.value)} type="text" placeholder='Search Product' />

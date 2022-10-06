@@ -6,7 +6,7 @@ const Footer = () => {
     return (
         <footer className='footer'>
             <section>
-                <p>Ecommerce by Glya Coorporations ©</p>
+                <p>Ecommerce by Luis Uzcategui</p>
             </section>
             <section className='social-networks'>
                 <a target='_blank' href="mailto:alfonsouzcategui2@gmail.com"><img src={email} alt="" /></a>

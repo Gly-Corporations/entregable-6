@@ -54,7 +54,7 @@ const Product = () => {
     }
 
     return (
-        <div>
+        <div className='main-products'>
             <ul className='list-link'>
                 <li onClick={() => navigate('/')} className='list-item-home'>Home</li>
                 <li className='list-item-title'>{productCurrent?.title}</li>
@@ -63,15 +63,17 @@ const Product = () => {
                 <article>
                     <Carousel variant='dark'>
                         <Carousel.Item interval={2000}>
-                            <img className="d-block w-100" src={productCurrent?.productImgs[0]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
+                            <img className="d-block w-100 img-suggestion" src={productCurrent?.productImgs[0]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
                         </Carousel.Item>
                         <Carousel.Item interval={2000}>
-                            <img className="d-block w-100" src={productCurrent?.productImgs[1]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
+                            <img className="d-block w-100 img-suggestion" src={productCurrent?.productImgs[1]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
                         </Carousel.Item>
                         <Carousel.Item interval={2000}>
-                            <img className="d-block w-100" src={productCurrent?.productImgs[2]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
+                            <img className="d-block w-100 img-suggestion" src={productCurrent?.productImgs[2]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
                         </Carousel.Item>
                     </Carousel>
+                </article>
+                <article>
                     <h3>{productCurrent?.title}</h3>
                     <div className='price-quantity'>
                         <div>
