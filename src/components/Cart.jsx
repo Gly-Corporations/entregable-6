@@ -29,7 +29,7 @@ const Cart = ({ show, handleClose }) => {
     }
 
     const deleteItem = id => {
-        axios.delete(`https://ecommerce-api-react.herokuapp.com/api/v1/cart/${id}`, getConfig())
+        axios.delete(`https://e-commerce-api.academlo.tech/api/v1/cart/${id}`, getConfig())
             .then(() => {
                 dispatch(getSetCart())
                 dispatch(setTitleModal('Removed product'))

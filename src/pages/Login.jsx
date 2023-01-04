@@ -23,7 +23,7 @@ const Login = () => {
   }
 
   const submit = userData => {
-    axios.post('https://ecommerce-api-react.herokuapp.com/api/v1/users/login', userData)
+    axios.post('https://e-commerce-api.academlo.tech/api/v1/users/login', userData)
       .then(res => {
         window.localStorage.setItem('token', res.data.data.token)
         window.localStorage.setItem('firstName', res.data.data.user.firstName)
@@ -42,7 +42,7 @@ const Login = () => {
   }
 
   const userRegister = newUser => {
-    axios.post('https://ecommerce-api-react.herokuapp.com/api/v1/users', newUser)
+    axios.post('https://e-commerce-api.academlo.tech/api/v1/users', newUser)
       .then(() => {
         alert('User Register')
         resetData()
