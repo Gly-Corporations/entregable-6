@@ -86,8 +86,8 @@ const Login = () => {
                   <h2>Welcome! enter you email and password to continue</h2>
                   <article className='test-data'>
                     <b>Test data</b>
-                    <p>mason@gmail.com</p>
-                    <p>mason1234</p>
+                    <p>john@gmail.com</p>
+                    <p>john1234</p>
                   </article>
                   <input type='email' placeholder='Email' {...register('email')} />
                   <div className='input-password'>
