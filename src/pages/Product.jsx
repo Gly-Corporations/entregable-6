@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getAddToCart, getUpdateToCart } from '../store/slices/cartList.slice';
+import { getAddToCart, getSetCart, getUpdateToCart } from '../store/slices/cartList.slice';
 import { setLoader } from '../store/slices/loader.slice';
 import { setHandleShow } from '../store/slices/handleShow.slice'
 import { setTitleModal } from '../store/slices/titleModal.slice'
+import { getProductsThunk } from '../store/slices/products.slice';
 
 const Product = () => {
     const { id } = useParams();
@@ -15,12 +16,15 @@ const Product = () => {
     const [quantity, setQuantity] = useState(1)
     const cartProducts = useSelector(state => state.cart)
     const token = window.localStorage.getItem('token')
+    const user = JSON.parse(localStorage.getItem('user'))  || {}
 
     const productCurrent = products.find(product => product.id === Number(id))
     const productsCategories = products.filter(product => product.category.id === productCurrent.category.id)
-    const cartProductCurrent = cartProducts.find(product => product.id === Number(id))
+    const cartProductCurrent = cartProducts.find(product => product.productId === Number(id))
 
-    window.scrollTo(0, 0)
+    useEffect(() => {
+        
+    }, [cartProducts])
 
     const productSelected = idSelected => {
         navigate(`/product/${idSelected}`)
@@ -33,21 +37,19 @@ const Product = () => {
     const addProductToCart = () => {
         if (token !== '') {
             const item = {
-                "id": id
+                "productId": Number(id)
             }
 
+            const cartId = user.cart.id
+
             if (cartProductCurrent !== undefined) {
-                item.newQuantity = quantity + Number(cartProductCurrent.productsInCart.quantity)
-                console.log(item)
-                dispatch(getUpdateToCart(item))
-                dispatch(setTitleModal('Successful update'))
-                dispatch(setHandleShow(true))
+                item.quantity = quantity + Number(cartProductCurrent.quantity)
+                dispatch(getUpdateToCart(item, cartId, user.id))
             } else {
                 item.quantity = quantity
-                dispatch(getAddToCart(item))
-                dispatch(setTitleModal('The produc was added successfully'))
-                dispatch(setHandleShow(true))
+                dispatch(getAddToCart(item, cartId, user.id))
             }
+            dispatch(getProductsThunk())
         } else {
             navigate('/login')
         }
@@ -62,15 +64,13 @@ const Product = () => {
             <section className='detail-current-product'>
                 <article>
                     <Carousel variant='dark'>
-                        <Carousel.Item interval={2000}>
-                            <img className="d-block w-100 img-suggestion" src={productCurrent?.productImgs[0]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
-                        </Carousel.Item>
-                        <Carousel.Item interval={2000}>
-                            <img className="d-block w-100 img-suggestion" src={productCurrent?.productImgs[1]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
-                        </Carousel.Item>
-                        <Carousel.Item interval={2000}>
-                            <img className="d-block w-100 img-suggestion" src={productCurrent?.productImgs[2]} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
-                        </Carousel.Item>
+                        {
+                            productCurrent?.productImgs.map(img => (
+                                <Carousel.Item interval={2000}>
+                                    <img className="d-block w-100 img-suggestion" src={img} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
+                                </Carousel.Item>
+                            ))
+                        }
                     </Carousel>
                 </article>
                 <article>
@@ -78,7 +78,7 @@ const Product = () => {
                     <div className='price-quantity'>
                         <div>
                             <p>Price</p>
-                            <b>$ {productCurrent?.price}</b>
+                            <b>$ {(productCurrent?.price)?.toFixed(2)}</b>
                         </div>
                         <div className='quantity'>
                             <p>Quantity</p>
@@ -86,6 +86,7 @@ const Product = () => {
                             <span>{quantity}</span>
                             <button onClick={() => setQuantity(quantity + 1)} className='material-symbols-outlined'>add</button>
                         </div>
+                        <p><b>Stock:</b> {productCurrent?.stock}</p>
                         <button onClick={() => addProductToCart()} className='addToCart-currentProduct'>Add to cart <span className='material-symbols-outlined'>shopping_cart</span></button>
                     </div>
                     <p className='detail-product'>{productCurrent?.description}</p>
@@ -101,8 +102,9 @@ const Product = () => {
                             </div>
                             <div className='description-product'>
                                 <h4>{product.title}</h4>
-                                <p>Price</p>
-                                <span>$ {product.price}</span>
+                                <b>Price</b>
+                                <span>$ {(product.price)?.toFixed(2)}</span>
+                                <p><span>Stock:</span> {product.stock}</p>
                             </div>
                             <button className='material-symbols-outlined add-to-cart'>shopping_cart</button>
                         </article>

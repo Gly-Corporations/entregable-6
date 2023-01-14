@@ -1,16 +1,14 @@
+import { useDispatch } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoutes = () => {
-    const tokenIsTrue = () => {
-        const token = window.localStorage.getItem('token')
-        return token !== ''
-    }
+    const dispatch = useDispatch()
+    const token = window.localStorage.getItem('token')
+    const { isVerify } = JSON.parse(window.localStorage.getItem('user'))
 
-	if(tokenIsTrue()){
-        return <Outlet />
-    } else { 
-        return <Navigate to='/login' />
-    }
+	if(token && isVerify) return <Outlet />;
+
+    return <Navigate to='/login' />;
 }
 
 export default ProtectedRoutes;

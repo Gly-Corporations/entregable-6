@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Accordion, FloatingLabel, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -9,38 +10,34 @@ const Home = () => {
     const categories = useSelector(state => state.category)
     const navigate = useNavigate()
     const [productsList, setProductsList] = useState([])
-    const [value, setValue] = useState('')
     const [showFilters, setShowFilters] = useState('')
-    const [showFilterPrice, setShowFilterPrice] = useState('')
-    const [showFilterCategory, setShowFilterCategory] = useState('')
     const { register, handleSubmit, reset } = useForm()
+    const dispatch = useDispatch()
 
 
     useEffect(() => {
         setProductsList(allProducts)
     }, [allProducts])
-    
+
     const searchProduct = productCurrent => {
         const filtered = allProducts.filter(product => product.title.toLowerCase().includes(productCurrent.toLowerCase()))
         setProductsList(filtered)
     }
 
     const filteCategory = id => {
-        const filtered = allProducts.filter(product => product.category.id === id)
-        setProductsList(filtered)
+        if (id === 'all') {
+            setProductsList(allProducts)
+        } else {
+            const filtered = allProducts.filter(product => product.category.id === id)
+            setProductsList(filtered)
+        }
         show()
     }
 
     const filterForPrice = valores => {
         const filtered = allProducts.filter(product => Number(product.price) >= Number(valores.from) && Number(product.price) <= Number(valores.to))
-        setProductsList(filtered)
-
-        reset(
-            {
-                from: '',
-                to: ''
-            }
-        )
+        setProductsList(filtered);
+        reset()
         show()
     }
 
@@ -52,72 +49,99 @@ const Home = () => {
         }
     }
 
-    const showFiltersPrice = data => {
-        if(data === 'price'){
-            if(showFilterPrice === ''){
-                setShowFilterPrice('show-filters')
-            } else {
-                setShowFilterPrice('')
-            }
+    // detectar cuando el user hace scroll
+
+    const handleScroll = () => {
+        const scroll = window.scrollY
+        const btnScrollTop = document.querySelector('.btn-scroll-top')
+        
+        if(btnScrollTop === null) return;
+
+        if (scroll > 100) {
+            btnScrollTop.classList.add('show')
         } else {
-            if(showFilterCategory === ''){
-                setShowFilterCategory('show-filters')
-            } else {
-                setShowFilterCategory('')
-            }
+            btnScrollTop.classList.remove('show')
         }
     }
 
-    const dispatch = useDispatch()
+    window.addEventListener('scroll', handleScroll);
+
+    const productSelected = id => {
+        if (id) navigate(`/product/${id}`);
+
+        window.scroll({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
 
 
     return (
         <div className='main'>
             <aside className='aside-search'>
-                <form className='form-search'>
-                    <input className='input-search-name' value={value} onChange={e => setValue(e.target.value)} type="text" placeholder='Search Product' />
-                    <button className='material-symbols-outlined btn-search-name' onClick={() => searchProduct(value)}>search</button>
-                </form>
+                <Form className='form-search'>
+                    <FloatingLabel label="Search Product" style={{ position: "relative" }}>
+                        <Form.Control className='input-search-name' onChange={e => searchProduct(e.target.value)} type="text" placeholder='Search Product' />
+                        <span className='material-symbols-outlined btn-search-name' >search</span>
+                    </FloatingLabel>
+                </Form>
                 <button onClick={() => show()} className='btn-showFilters'><span className='material-symbols-outlined btn-showFilters-icon'>filter_alt</span>Filters</button>
                 <section className={`filters-more ${showFilters}`}>
                     <button onClick={() => show()} className='material-symbols-outlined btn-close-filters'>close</button>
-                    <article>
-                        <button className='btn-filters btn-filters-price' onClick={() => showFiltersPrice('price')}>Price<span className='material-symbols-outlined'>expand_more</span></button>
-                        <form className={`form-search-price ${showFilterPrice}`} onSubmit={handleSubmit(filterForPrice)}>
-                            <input className='input-filter-price' type="text" placeholder='From' {...register('from')}/>
-                            <input className='input-filter-price' type="text" placeholder='To' {...register('to')}/>
-                            <button className='btn-filter-price'>Filter Price</button>
-                        </form>
-                    </article>
-                    <article>
-                        <button className='btn-filters' onClick={() => showFiltersPrice('category')}>Categories<span className='material-symbols-outlined'>expand_more</span></button>
-                        <ul className={`search-category ${showFilterCategory} `}>
-                            {
-                                categories.map(category => (
-                                    <li onClick={() => filteCategory(category.id)} key={category.id}>{category.name}</li>
-                                ))
-                            }
-                        </ul>
-                    </article>
+                    <Accordion style={{ marginTop: "5rem" }} flush>
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Price</Accordion.Header>
+                            <Accordion.Body>
+                                <Form onSubmit={handleSubmit(filterForPrice)} className="form-search-price">
+                                    <Form.Group className="mb-1">
+                                        <FloatingLabel label="From">
+                                            <Form.Control type="text" placeholder="From" {...register('from')} />
+                                        </FloatingLabel>
+                                    </Form.Group>
+                                    <Form.Group className="mb-1">
+                                        <FloatingLabel label="To">
+                                            <Form.Control type="text" placeholder="To" {...register('to')} />
+                                        </FloatingLabel>
+                                    </Form.Group>
+                                    <button className='btn-filter-price'>Filter Price</button>
+                                </Form>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="1">
+                            <Accordion.Header>Categories</Accordion.Header>
+                            <Accordion.Body>
+                                <ul className='search-category'>
+                                    <li onClick={() => filteCategory("all")}>All</li>
+                                    {
+                                        categories.map(category => (
+                                            <li onClick={() => filteCategory(category.id)} key={category.id}>{category.name}</li>
+                                        ))
+                                    }
+                                </ul>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
                 </section>
             </aside>
             <section className='container-products'>
                 {
                     productsList.map(product => (
-                        <article className='product-card' key={product.id} onClick={() => navigate(`/product/${product.id}`)}>
+                        <article className='product-card' key={product.id} onClick={() => productSelected(product.id)}>
                             <div className='img-product'>
                                 <img src={product.productImgs?.[0]} alt="photo" onLoad={() => dispatch(setLoader(false))} />
                             </div>
                             <div className='description-product'>
                                 <h4>{product.title}</h4>
-                                <p>Price</p>
-                                <span>$ {product.price}</span>
+                                <b>Price</b>
+                                <span>$ {(product.price).toFixed(2)}</span>
+                                <p><span>Stock:</span> {product.stock}</p>
                             </div>
                             <button className='material-symbols-outlined add-to-cart'>shopping_cart</button>
                         </article>
                     ))
                 }
             </section>
+            <button onClick={() => productSelected()} className='btn-scroll-top'><span className='material-symbols-outlined'>arrow_upward</span></button>
         </div>
     );
 };

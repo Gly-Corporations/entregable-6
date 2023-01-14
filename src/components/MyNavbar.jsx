@@ -1,20 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { setHandleShow, setTitleModal } from '../store/slices';
 import { getSetCart } from '../store/slices/cartList.slice';
+import { setLogged } from '../store/slices/logged.slice';
 import Cart from './Cart';
 
 const MyNavbar = () => {
-    const token = window.localStorage.getItem('token')
     const [show, setShow] = useState(false)
     const dispatch = useDispatch()
+    const logged = useSelector(state => state.logged)
 
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
+
     const logout = () => {
-        window.localStorage.setItem('token', '')
-        window.location.reload()
+        window.localStorage.removeItem('token')
+        window.sessionStorage.removeItem('token')
+        dispatch(setLogged(false))
+        dispatch(setTitleModal('Successful logout'));
+        dispatch(setHandleShow(true));
     }
 
     useEffect(() => {
@@ -27,11 +33,11 @@ const MyNavbar = () => {
                 <Container>
                     <Navbar.Brand to='/' as={Link}>Ecommerce</Navbar.Brand>
                     <Nav>
-                        <Nav.Link to='/login' as={Link}><span className={`material-symbols-outlined ${token !== '' && 'login-user'}`}>person</span></Nav.Link>
+                        <Nav.Link to='/login' as={Link}><span className={`material-symbols-outlined ${logged && 'login-user'}`}>person</span></Nav.Link>
                         <Nav.Link to='/purchases' as={Link}><span className="material-symbols-outlined">inventory_2</span></Nav.Link>
                         <Nav.Link onClick={handleShow} ><span className="material-symbols-outlined">shopping_cart</span></Nav.Link>
                         {
-                            token !== '' && <Nav.Link onClick={logout}><span className="material-symbols-outlined">logout</span></Nav.Link>
+                            logged && <Nav.Link onClick={logout}><span className="material-symbols-outlined">logout</span></Nav.Link>
                         }
                     </Nav>
                 </Container>

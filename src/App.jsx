@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
@@ -13,17 +13,23 @@ import { getCategoryThunk } from './store/slices/category.slice'
 import { getProductsThunk } from './store/slices/products.slice';
 import Footer from './components/Footer'
 import ModalAlert from './components/ModalAlert'
+import { getRolesThunk } from './store/slices/roles.slice'
+import { setLogged } from './store/slices/logged.slice'
+import { getUsersThunk } from './store/slices/users.slice'
 
 function App() {
-  const [count, setCount] = useState(0)
   const loader = useSelector(state => state.loader)
   const dispatch = useDispatch()
+  const token = window.localStorage.getItem('token') ? true : false
 
 
   useEffect(() => {
     dispatch(getProductsThunk())
     dispatch(getCategoryThunk())
-  }, [])
+    dispatch(getRolesThunk())
+    dispatch(getUsersThunk())
+    dispatch(setLogged(token))
+  }, [token])
 
   return (
     <HashRouter>
@@ -31,7 +37,7 @@ function App() {
       {
         loader && <LoadingScreen />
       }
-      <MyNavbar />
+      <MyNavbar token={token} />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />

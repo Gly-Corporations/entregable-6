@@ -1,10 +1,11 @@
 import axios from 'axios';
-import React, { useEffect } from 'react';
-import { ListGroup, Offcanvas } from 'react-bootstrap';
+import { useEffect } from 'react';
+import { Offcanvas } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getSetCart, purchasesCartThunk } from '../store/slices/cartList.slice';
 import { setHandleShow } from '../store/slices/handleShow.slice';
+import { getProductsThunk } from '../store/slices/products.slice';
 import { setTitleModal } from '../store/slices/titleModal.slice';
 import getConfig from '../utils/getConfig';
 
@@ -12,36 +13,43 @@ const Cart = ({ show, handleClose }) => {
     const cartList = useSelector(state => state.cart)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const user = JSON.parse(localStorage.getItem('user')) || {}
 
     const productSelected = id => {
         navigate(`/product/${id}`)
         handleClose()
+        window.scroll({
+            top: 0,
+            behavior: 'smooth'
+        });
     }
 
     useEffect(() => {
-        dispatch(getSetCart())
+        dispatch(getSetCart(user.id))
     }, [])
 
     const total = () => {
         let valor = 0
-        cartList.forEach(product => valor += product.price * product.productsInCart.quantity)
-        return valor
+        cartList.forEach(product => valor += product.price * product.quantity)
+        return (valor).toFixed(2)
     }
 
     const deleteItem = id => {
-        axios.delete(`https://e-commerce-api.academlo.tech/api/v1/cart/${id}`, getConfig())
+        axios.delete(`https://api-ecommerce-production-ca22.up.railway.app/api/v1/user/cart/product/${id}`, getConfig())
             .then(() => {
-                dispatch(getSetCart())
+                dispatch(getSetCart(user.id))
                 dispatch(setTitleModal('Removed product'))
                 dispatch(setHandleShow(true))
             })
             .catch(error => console.log(error))
+            .finally(() => {
+                dispatch(getSetCart(user.id))
+                dispatch(getProductsThunk())
+            })
     }
 
     const pucharse = () => {
-        dispatch(purchasesCartThunk())
-        dispatch(setTitleModal('Successfull purchase'))
-        dispatch(setHandleShow(true))
+        dispatch(purchasesCartThunk(user.id))
     }
 
     return (
@@ -54,11 +62,11 @@ const Cart = ({ show, handleClose }) => {
                     {
                         cartList.map(itemCart => (
                             <li key={itemCart.id}>
-                                <div onClick={() => productSelected(itemCart.id)}>
-                                    <p className='p-brand'>{itemCart?.brand}</p>
-                                    <b className='b-title'>{itemCart?.title}</b>
-                                    <b className='b-quantity'>{itemCart.productsInCart?.quantity}</b>
-                                    <p className='p-total'>Total: <b>$ {itemCart?.price * itemCart.productsInCart?.quantity}</b></p>
+                                <div onClick={() => productSelected(itemCart.productId)}>
+                                    <p className='p-brand'>{itemCart.item.category?.name}</p>
+                                    <b className='b-title'>{itemCart.item?.title}</b>
+                                    <b className='b-quantity'>{itemCart?.quantity}</b>
+                                    <p className='p-total'>Total: <b>$ {itemCart?.price * itemCart?.quantity}</b></p>
                                 </div>
                                 <button className='material-symbols-outlined btn-delete-item' onClick={() => deleteItem(itemCart.id)}>delete</button>
                             </li>

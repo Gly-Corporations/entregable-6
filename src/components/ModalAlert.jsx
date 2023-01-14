@@ -1,4 +1,4 @@
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHandleShow } from '../store/slices/handleShow.slice';
 
@@ -13,9 +13,13 @@ const ModalAlert = () => {
             aria-labelledby="contained-modal-title-vcenter"
             centered show={show}
             onHide={() => dispatch(setHandleShow(false))}
-            backdrop="static" keyboard={false}
+            backdrop="static"
+            keyboard={false}
         >
-            <Modal.Header closeButton>
+            <Modal.Header
+                closeButton
+                style={{ boxShadow: "0 0 30px #00000095" }}
+            >
                 <Modal.Title>{titleModal}</Modal.Title>
             </Modal.Header>
         </Modal>

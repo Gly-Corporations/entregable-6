@@ -8,10 +8,12 @@ const Purchases = () => {
     const dispatch = useDispatch()
     const purchases = useSelector(state => state.purchases)
     const navigate = useNavigate()
+    const user = JSON.parse(localStorage.getItem('user'))
+    const cart = useSelector(state => state.cart)
 
     useEffect(() => {
-        dispatch(getPurchasesThunk());
-      }, []);
+        dispatch(getPurchasesThunk(user.id));
+      }, [cart]);
 
     return (
         <div className='purchases-container'>
@@ -22,7 +24,7 @@ const Purchases = () => {
             <h2><b>My purchases</b></h2>
             {
                 purchases.map(purchase => (
-                    <PurchasesList key={purchase.id} purchase={purchase} listProducts={purchase.cart.products}/>
+                    <PurchasesList key={purchase.id} purchase={purchase} listProducts={purchase.orderProduct}/>
                 ))
             }
         </div>

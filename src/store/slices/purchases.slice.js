@@ -14,10 +14,10 @@ export const purchasesSlice = createSlice({
     }
 })
 
-export const getPurchasesThunk = () => (dispatch) => {
+export const getPurchasesThunk = (userId) => (dispatch) => {
     dispatch(setLoader(true));
-    return axios.get('https://e-commerce-api.academlo.tech/api/v1/purchases', getConfig())
-        .then(res => dispatch(setPurchases(res.data.data.purchases)))
+    return axios.get(`https://api-ecommerce-production-ca22.up.railway.app/api/v1/user/${userId}/purchases`, getConfig())
+        .then(res => dispatch(setPurchases(res.data)))
         .finally(() => dispatch(setLoader(false)));
 }
 

@@ -1,51 +1,63 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'; import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setLoader } from '../store/slices/loader.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoader, setHandleShow, setTitleModal } from '../store/slices';
+import { Accordion } from 'react-bootstrap';
+import NewUser from '../components/modals/NewUser';
+import NewProduct from '../components/modals/NewProduct';
+import NewRole from '../components/modals/NewRole';
+import NewCategory from '../components/modals/NewCategory';
+import DeleteRole from '../components/modals/DeleteRole';
+import DeleteCategory from '../components/modals/DeleteCategory';
+import DeleteProduct from '../components/modals/DeleteProduct';
+import { setLogged } from '../store/slices/logged.slice';
+import DeleteUser from '../components/modals/DeleteUser';
+import Verify from '../components/modals/Verify';
 
 const Login = () => {
   const [loginSignup, setLoginSignup] = useState(true)
   const [typeInput, setTypeInput] = useState('password')
   const [visibility, setVisibility] = useState('visibility')
+  const [show, setShow] = useState(0);
   const { register, handleSubmit, reset } = useForm()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   dispatch(setLoader(false))
-  const login = window.localStorage.getItem('token')
-  const fisrtName = window.localStorage.getItem('firstName')
-  const lastName = window.localStorage.getItem('lastName')
 
+  const user = JSON.parse(window.localStorage.getItem('user')) || {}
+  const login = useSelector(state => state.logged)
+  const { firstName, lastName, roleId, isVerify } = user
 
   const resetData = () => {
     reset()
   }
 
   const submit = userData => {
-    axios.post('https://e-commerce-api.academlo.tech/api/v1/users/login', userData)
+    console.log(userData)
+    axios.post('https://api-ecommerce-production-ca22.up.railway.app/api/v1/login', userData)
       .then(res => {
-        window.localStorage.setItem('token', res.data.data.token)
-        window.localStorage.setItem('firstName', res.data.data.user.firstName)
-        window.localStorage.setItem('lastName', res.data.data.user.lastName)
+        window.localStorage.setItem('token', res.data.token)
+        window.localStorage.setItem('user', JSON.stringify(res.data.user))
         resetData()
+        dispatch(setLogged(true))
         dispatch(setTitleModal('Successful login'))
         dispatch(setHandleShow(true))
         navigate('/')
       })
       .catch(error => {
-        if (error.response?.status === 404) {
-          alert(error.response.data.message)
-        }
-        console.log(error.response)
+        console.log(error)
       })
   }
 
   const userRegister = newUser => {
-    axios.post('https://e-commerce-api.academlo.tech/api/v1/users', newUser)
+    axios.post('https://api-ecommerce-production-ca22.up.railway.app/api/v1/user', newUser)
       .then(() => {
-        alert('User Register')
-        resetData()
+        dispatch(setTitleModal('Successful registration'));
+        dispatch(setHandleShow(true));
+        resetData();
+        changeSection();
       })
       .catch(error => console.log(error))
   }
@@ -67,17 +79,74 @@ const Login = () => {
   const logout = () => {
     window.localStorage.setItem('token', '')
     window.location.reload()
-}
+  }
 
+  const setShowFunction = data => {
+    setShow(data)
+  }
 
   return (
     <>
+    <Verify show={!isVerify} user={user}/>
+    <NewUser show={show} setShowFunction={setShowFunction}/>
+    <DeleteUser show={show} setShowFunction={setShowFunction}/>
+    <NewProduct show={show} setShowFunction={setShowFunction}/>
+    <DeleteProduct show={show} setShowFunction={setShowFunction}/>
+    <NewRole show={show} setShowFunction={setShowFunction}/>
+    <DeleteRole show={show} setShowFunction={setShowFunction}/>
+    <NewCategory show={show} setShowFunction={setShowFunction}/>
+    <DeleteCategory show={show} setShowFunction={setShowFunction}/>
       {
         login ? (
-          <div className='login-successful'>
-            <h4>Hi! {fisrtName} {lastName} welcome</h4>
-            <a href="#" onClick={logout}>Log out</a>
-          </div>
+          roleId !== 1 ? (
+            <div className='login-successful'>
+              <h4>Hi! {firstName} {lastName} welcome</h4>
+              <a href="#" onClick={logout}>Log out</a>
+            </div>
+          ) : (
+            <article className='login-successful'>
+              <section >
+                <h4>Hi! {firstName} {lastName} welcome</h4>
+                <p>Here you can manage the products and users</p>
+              </section>
+              <section className='admin-section__buttons'>
+                <Accordion>
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>User Management</Accordion.Header>
+                    <Accordion.Body className='btn_admin_management'>
+                      <button className='btn_admin' onClick={() => setShow(1)}><b className='material-symbols-outlined'>add</b> Users</button>
+                      <button className='btn_admin' onClick={() => setShow(2)}><b className='material-symbols-outlined'>remove</b> Users</button>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header>Product Management</Accordion.Header>
+                    <Accordion.Body className='btn_admin_management'>
+                      <button className='btn_admin' onClick={() => setShow(3)}><b className='material-symbols-outlined'>add</b> Products</button>
+                      <button className='btn_admin' onClick={() => setShow(4)}><b className='material-symbols-outlined'>remove</b> Products</button>
+                      <button className='btn_admin' onClick={() => setShow(5)}><b className='material-symbols-outlined'>update</b> Products</button>
+                      <button className='btn_admin' onClick={() => setShow(6)}><b className='material-symbols-outlined'>update</b> Stock</button>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header>Roles Management</Accordion.Header>
+                    <Accordion.Body className='btn_admin_management'>
+                      <button className='btn_admin' onClick={() => setShow(7)}><b className='material-symbols-outlined'>add</b> Role</button>
+                      <button className='btn_admin' onClick={() => setShow(8)}><b className='material-symbols-outlined'>remove</b> Role</button>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header>Category Management</Accordion.Header>
+                    <Accordion.Body className='btn_admin_management'>
+                      <button className='btn_admin' onClick={() => setShow(9)}><b className='material-symbols-outlined'>add</b> Category</button>
+                      <button className='btn_admin' onClick={() => setShow(10)}><b className='material-symbols-outlined'>remove</b> Category</button>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              </section>
+              <a style={{marginTop: '1.5rem'}} href="#" onClick={logout}>Log out</a>
+            </article>
+
+          )
         ) : (
           <div className='form-container'>
             {
@@ -107,7 +176,7 @@ const Login = () => {
                     <input type={typeInput} placeholder='Password' {...register('password')} />
                     <span onClick={() => isVisible()} className='material-symbols-outlined is-visible'>{visibility}</span>
                   </div>
-                  <input type='text' placeholder='Phone Number' {...register('phone')} />
+                  <input type='text' placeholder='Phone Number' {...register('phoneNumber')} />
                   <button>Sign up</button>
                   <p>Already have an account? <span onClick={() => changeSection()}>Login</span></p>
                 </form>

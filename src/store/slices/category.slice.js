@@ -15,8 +15,8 @@ export const categorySlice = createSlice({
 
 export const getCategoryThunk = () => dispatch => {
     dispatch(setLoader(true));
-    axios.get('https://e-commerce-api.academlo.tech/api/v1/products/categories')
-        .then(res => dispatch(setCategory(res.data.data.categories)))
+    axios.get('https://api-ecommerce-production-ca22.up.railway.app/api/v1/categories')
+        .then(res => dispatch(setCategory(res.data)))
         //.finally(() => dispatch(setLoader(false)))
 }
 
