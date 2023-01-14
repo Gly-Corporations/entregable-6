@@ -405,6 +405,7 @@ li {
     display: grid;
     gap: 1.5rem;
     padding: 0 .5rem;
+    min-height: calc(100vh - 13.5rem);
 }
 
 .cart-container {

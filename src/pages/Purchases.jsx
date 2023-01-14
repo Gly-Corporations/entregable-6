@@ -23,9 +23,17 @@ const Purchases = () => {
             </ul>
             <h2><b>My purchases</b></h2>
             {
-                purchases.map(purchase => (
-                    <PurchasesList key={purchase.id} purchase={purchase} listProducts={purchase.orderProduct}/>
-                ))
+                purchases.length < 1 ? (
+                    <img
+                        src="https://cdn4.iconfinder.com/data/icons/ecommerce-outlined/50/Outline_Exports_bag-shopping-sale-purchase-brand-ecommerce-empty-512.png"
+                        alt=""
+                        style={{ width: '100px', height: 'auto', margin: '0 auto' }}
+                    />
+                ) : (
+                    purchases.map(purchase => (
+                        <PurchasesList key={purchase.id} purchase={purchase} listProducts={purchase.orderProduct}/>
+                    ))
+                )
             }
         </div>
     );

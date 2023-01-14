@@ -58,6 +58,15 @@ const Cart = ({ show, handleClose }) => {
                 <Offcanvas.Title><b>Shoppign Cart</b></Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
+                {
+                    cartList.length < 1 && (
+                        <img
+                            src="https://www.99fashionbrands.com/wp-content/uploads/2020/12/empty_cart.png"
+                            alt="img of the cart empty"
+                            style={{ width: '100%', height: 'auto' }}
+                        />
+                    )
+                }
                 <ul className='cart-container'>
                     {
                         cartList.map(itemCart => (
@@ -66,7 +75,7 @@ const Cart = ({ show, handleClose }) => {
                                     <p className='p-brand'>{itemCart.item.category?.name}</p>
                                     <b className='b-title'>{itemCart.item?.title}</b>
                                     <b className='b-quantity'>{itemCart?.quantity}</b>
-                                    <p className='p-total'>Total: <b>$ {itemCart?.price * itemCart?.quantity}</b></p>
+                                    <p className='p-total'>Total: <b>$ {(itemCart?.price * itemCart?.quantity).toFixed(2)}</b></p>
                                 </div>
                                 <button className='material-symbols-outlined btn-delete-item' onClick={() => deleteItem(itemCart.id)}>delete</button>
                             </li>
