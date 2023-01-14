@@ -480,6 +480,12 @@ li {
     color: var(--white);
 }
 
+.login-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: calc(100vh - 13.5rem);
+}
+
 .login-successful {
     margin: auto;
     padding: 2rem .5rem;
@@ -652,6 +658,10 @@ li {
     
     .footer {
         margin: 0;
+    }
+
+    .login-container {
+        padding: 0 10rem;
     }
 }
 

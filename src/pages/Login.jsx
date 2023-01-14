@@ -86,7 +86,7 @@ const Login = () => {
   }
 
   return (
-    <>
+    <div className='login-container'>
     <Verify show={!isVerify} user={user}/>
     <NewUser show={show} setShowFunction={setShowFunction}/>
     <DeleteUser show={show} setShowFunction={setShowFunction}/>
@@ -185,7 +185,7 @@ const Login = () => {
           </div>
         )
       }
-    </>
+    </div>
   );
 };
 
