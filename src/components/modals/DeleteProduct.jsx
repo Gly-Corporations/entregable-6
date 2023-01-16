@@ -21,20 +21,29 @@ const DeleteProduct = ({ show, setShowFunction }) => {
         if(Number(productNumber) === 0) {
             dispatch(setTitleModal('Select a product'))
             dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
             return;
         }
         
         axios.delete(`https://api-ecommerce-production-ca22.up.railway.app/api/v1/product/${productNumber}/delete`, getConfig())
             .then(() => {
                 dispatch(setTitleModal('Deleted product'));
-                dispatch(setHandleShow(true));
+                dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000);
                 dispatch(getProductsUserThunk(id));
                 setShowFunction(0)
             })
             .catch(err => {
                 console.log(err)
                 dispatch(setTitleModal(err.response.data));
-                dispatch(setHandleShow(true));
+                dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000);
             })
     }
 

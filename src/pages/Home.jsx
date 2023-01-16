@@ -3,7 +3,7 @@ import { Accordion, FloatingLabel, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setLoader } from '../store/slices/loader.slice';
+import { setLoader } from '../store/slices';
 
 const Home = () => {
     const allProducts = useSelector(state => state.products)

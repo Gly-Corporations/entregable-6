@@ -17,6 +17,9 @@ const DeleteCategory = ({ show, setShowFunction }) => {
         if(Number(categoryNumber) === 0) {
             dispatch(setTitleModal('Select a category'))
             dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
             return;
         }
 
@@ -24,12 +27,18 @@ const DeleteCategory = ({ show, setShowFunction }) => {
             .then(() => {
                 dispatch(setTitleModal('Deleted category'))
                 dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
                 dispatch(getCategoryThunk())
                 setShowFunction(0)
             })
             .catch(err => {
                 dispatch(setTitleModal('Error deleting category'))
                 dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
                 setShowFunction(0)
             })
     }

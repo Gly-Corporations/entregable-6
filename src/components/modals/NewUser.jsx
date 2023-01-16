@@ -20,6 +20,9 @@ const NewUser = ({ show, setShowFunction }) => {
                 reset();
                 dispatch(setTitleModal('Successfully added user'))
                 dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
                 setShowFunction(0);
             })
             .catch(err => console.log(err))

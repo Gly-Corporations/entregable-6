@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'; import React from 'react';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoader, setHandleShow, setTitleModal } from '../store/slices';
+import { setLoader, setHandleShow, setTitleModal, setLogged } from '../store/slices';
 import { Accordion } from 'react-bootstrap';
 import NewUser from '../components/modals/NewUser';
 import NewProduct from '../components/modals/NewProduct';
@@ -12,9 +12,10 @@ import NewCategory from '../components/modals/NewCategory';
 import DeleteRole from '../components/modals/DeleteRole';
 import DeleteCategory from '../components/modals/DeleteCategory';
 import DeleteProduct from '../components/modals/DeleteProduct';
-import { setLogged } from '../store/slices/logged.slice';
 import DeleteUser from '../components/modals/DeleteUser';
 import Verify from '../components/modals/Verify';
+
+
 
 const Login = () => {
   const [loginSignup, setLoginSignup] = useState(true)
@@ -35,7 +36,6 @@ const Login = () => {
   }
 
   const submit = userData => {
-    console.log(userData)
     axios.post('https://api-ecommerce-production-ca22.up.railway.app/api/v1/login', userData)
       .then(res => {
         window.localStorage.setItem('token', res.data.token)
@@ -44,10 +44,14 @@ const Login = () => {
         dispatch(setLogged(true))
         dispatch(setTitleModal('Successful login'))
         dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
         navigate('/')
       })
       .catch(error => {
-        console.log(error)
+        dispatch(setTitleModal(error.response.data.message))
+        dispatch(setHandleShow(true))
       })
   }
 
@@ -55,7 +59,10 @@ const Login = () => {
     axios.post('https://api-ecommerce-production-ca22.up.railway.app/api/v1/user', newUser)
       .then(() => {
         dispatch(setTitleModal('Successful registration'));
-        dispatch(setHandleShow(true));
+        dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000);
         resetData();
         changeSection();
       })
@@ -77,9 +84,16 @@ const Login = () => {
   }
 
   const logout = () => {
-    window.localStorage.setItem('token', '')
+    window.localStorage.removeItem('token')
+    window.localStorage.removeItem('user')
+    dispatch(setLogged(false))
+    dispatch(setTitleModal('Successful logout'));
+    dispatch(setHandleShow(true))
+        setTimeout(() => {
+            dispatch(setHandleShow(false))
+        }, 2000);
     window.location.reload()
-  }
+}
 
   const setShowFunction = data => {
     setShow(data)

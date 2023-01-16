@@ -16,6 +16,9 @@ const NewRole = ({ show, setShowFunction }) => {
             .then(() => {
                 dispatch(setTitleModal('Created role'))
                 dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
                 dispatch(getRolesThunk());
                 setShowFunction(0)
             })

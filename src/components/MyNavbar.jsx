@@ -17,10 +17,14 @@ const MyNavbar = () => {
 
     const logout = () => {
         window.localStorage.removeItem('token')
-        window.sessionStorage.removeItem('token')
+        window.localStorage.removeItem('user')
         dispatch(setLogged(false))
         dispatch(setTitleModal('Successful logout'));
-        dispatch(setHandleShow(true));
+        dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000);
+        window.location.reload()
     }
 
     useEffect(() => {

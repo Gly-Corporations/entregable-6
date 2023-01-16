@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getAddToCart, getSetCart, getUpdateToCart } from '../store/slices/cartList.slice';
-import { setLoader } from '../store/slices/loader.slice';
-import { setHandleShow } from '../store/slices/handleShow.slice'
-import { setTitleModal } from '../store/slices/titleModal.slice'
-import { getProductsThunk } from '../store/slices/products.slice';
+import { getAddToCart, getUpdateToCart, setLoader, getProductsThunk } from '../store/slices';
 
 const Product = () => {
     const { id } = useParams();
@@ -22,10 +18,6 @@ const Product = () => {
     const productsCategories = products.filter(product => product.category.id === productCurrent.category.id)
     const cartProductCurrent = cartProducts.find(product => product.productId === Number(id))
 
-    useEffect(() => {
-        
-    }, [cartProducts])
-
     const productSelected = idSelected => {
         navigate(`/product/${idSelected}`)
         window.scroll({
@@ -35,7 +27,7 @@ const Product = () => {
     }
 
     const addProductToCart = () => {
-        if (token !== '') {
+        if (token) {
             const item = {
                 "productId": Number(id)
             }
@@ -66,7 +58,7 @@ const Product = () => {
                     <Carousel variant='dark'>
                         {
                             productCurrent?.productImgs.map(img => (
-                                <Carousel.Item interval={2000}>
+                                <Carousel.Item interval={2000} key={img}>
                                     <img className="d-block w-100 img-suggestion" src={img} alt="Photo one of the Product" onLoad={() => dispatch(setLoader(false))} />
                                 </Carousel.Item>
                             ))

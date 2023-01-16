@@ -16,6 +16,9 @@ const DeleteUser = ({ show, setShowFunction }) => {
         if (Number(userSelected) === 0) {
             dispatch(setTitleModal('Select a user'))
             dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
             return;
         }
 
@@ -23,6 +26,9 @@ const DeleteUser = ({ show, setShowFunction }) => {
             .then(() => {
                 dispatch(setTitleModal('Deleted user'))
                 dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
                 dispatch(getUsersThunk());
                 setShowFunction(0)
             })

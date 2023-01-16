@@ -16,6 +16,9 @@ const DeleteRole = ({ show, setShowFunction }) => {
         if(Number(roleNumber) === 0) {
             dispatch(setTitleModal('Select a role'))
             dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
             return;
         }
 
@@ -23,6 +26,9 @@ const DeleteRole = ({ show, setShowFunction }) => {
             .then(() => {
                 dispatch(setTitleModal('Deleted role'))
                 dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
                 dispatch(getRolesThunk());
                 setShowFunction(0)
             })   

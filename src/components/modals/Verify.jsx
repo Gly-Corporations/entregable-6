@@ -17,7 +17,10 @@ const Verify = ({show, user}) => {
         axios.put(`https://api-ecommerce-production-ca22.up.railway.app/api/v1/user/${id}/verify`, data, getConfig())
             .then(res => {
                 dispatch(setTitleModal('Successful verification'));
-                dispatch(setHandleShow(true));
+                dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000);
                 user.isVerify = true;
                 window.localStorage.setItem('user', JSON.stringify(user));
                 setTimeout(() => {
@@ -27,7 +30,10 @@ const Verify = ({show, user}) => {
             .catch(error => {
                 console.log(error);
                 dispatch(setTitleModal('Error in verification'));
-                dispatch(setHandleShow(true));
+                dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000);
             })
     }
     return (

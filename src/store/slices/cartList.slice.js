@@ -16,8 +16,8 @@ export const cartListSlice = createSlice({
 })
 
 export const getSetCart = (id) => (dispatch) => {
+    if(!id) return
     dispatch(setLoader(true));
-    console.log(id)
     return axios.get(`https://api-ecommerce-production-ca22.up.railway.app/api/v1/user/${id}/cart`, getConfig())
         .then(res => dispatch(setCart(res.data[0].cartProduct)))
         .finally(() => dispatch(setLoader(false)))
@@ -25,16 +25,21 @@ export const getSetCart = (id) => (dispatch) => {
 
 export const getAddToCart = (item, cartId, userId) => (dispatch) => {
     dispatch(setLoader(true));
-    console.log(item, cartId)
     return axios.post(`https://api-ecommerce-production-ca22.up.railway.app/api/v1/user/cart/${cartId}/product`, item, getConfig())
         .then(() => {
             dispatch(getSetCart(userId))
             dispatch(setTitleModal('The produc was added successfully'))
             dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
         })
         .catch(error => {
             dispatch(setTitleModal(error.response.data))
             dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
         })
         .finally(() => dispatch(setLoader(false)));
 }
@@ -47,11 +52,17 @@ export const getUpdateToCart = (item, cartId, userId) => (dispatch) => {
             dispatch(getSetCart(userId))
             dispatch(setTitleModal('Successful update'))
             dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
         })
         .catch(error => {
             console.log(error)
             dispatch(setTitleModal(error.response.data))
             dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
         })
         .finally(() => dispatch(setLoader(false)));
 }
@@ -63,6 +74,12 @@ export const purchasesCartThunk = (userId) => (dispatch) => {
             dispatch(setCart([]))
             dispatch(setTitleModal('Successfull purchase'))
             dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
         })
         .finally(() => dispatch(setLoader(false)));
 }

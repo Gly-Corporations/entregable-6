@@ -40,6 +40,9 @@ const Cart = ({ show, handleClose }) => {
                 dispatch(getSetCart(user.id))
                 dispatch(setTitleModal('Removed product'))
                 dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
             })
             .catch(error => console.log(error))
             .finally(() => {
@@ -49,6 +52,10 @@ const Cart = ({ show, handleClose }) => {
     }
 
     const pucharse = () => {
+        if(!user.id){
+            navigate('/login')
+            handleClose()
+        }
         dispatch(purchasesCartThunk(user.id))
     }
 

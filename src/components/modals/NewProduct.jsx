@@ -3,36 +3,40 @@ import { useState } from 'react';
 import { FloatingLabel, Form, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { setHandleShow, setTitleModal } from '../../store/slices';
-import { getProductsThunk } from '../../store/slices/products.slice';
-import { getProductsUserThunk } from '../../store/slices/productUser.slice';
+import { setHandleShow, setTitleModal, getProductsThunk, getProductsUserThunk } from '../../store/slices';
 import getConfig from '../../utils/getConfig';
 
 const NewProduct = ({ show, setShowFunction }) => {
-    const { register, handleSubmit, reset } = useForm()
-    const [categorySelected, setCategorySelected] = useState(0);
     const valid = show === 3;
     const dispatch = useDispatch();
     const categories = useSelector(state => state.category);
+    const [categorySelected, setCategorySelected] = useState(0);
     const { id } = JSON.parse(localStorage.getItem('user')) || { id: 0 };
+    const { register, handleSubmit, reset } = useForm()
+
 
     const submit = data => {
-        data.userId = Number(id);
-        data.price = Number(data.price);
-        data.stock = Number(data.stock);
-        data.categoryId = categorySelected;
-        data.productImgs = []
-        for (const file of data.imgs) {
-            data.productImgs.push(`https://github.com/Glya-Corporation/galery-e/blob/main/${file.name}?raw=true`)
+        const formData = new FormData();
+        formData.append('title', data.title);
+        formData.append('price', data.price);
+        formData.append('description', data.description);
+        formData.append('stock', data.stock);
+        formData.append('categoryId', categorySelected);
+        let i = 1;
+        for(const file of data.productImgs) {
+            i++;
+            formData.append(`img${i}`, file);
         }
-        delete data.imgs;
         
-        axios.post('https://api-ecommerce-production-ca22.up.railway.app/api/v1/product', data, getConfig())
+        axios.post('http://localhost:1811/api/v1/product', formData, getConfig())
             .then(res => {
                 console.log(res)
                 reset();
                 dispatch(setTitleModal('Successfully added product'));
-                dispatch(setHandleShow(true));
+                dispatch(setHandleShow(true))
+                setTimeout(() => {
+                    dispatch(setHandleShow(false))
+                }, 2000);
                 dispatch(getProductsThunk())
                 dispatch(getProductsUserThunk(id));
                 setShowFunction(0);
@@ -40,7 +44,10 @@ const NewProduct = ({ show, setShowFunction }) => {
             .catch(err => {
                 console.log(err)
                 dispatch(setTitleModal(err.response.data.message));
-                dispatch(setHandleShow(true));
+                dispatch(setHandleShow(true))
+                setTimeout(() => {
+                    dispatch(setHandleShow(false))
+                }, 2000);
             })
     };
 
@@ -85,8 +92,8 @@ const NewProduct = ({ show, setShowFunction }) => {
                             </FloatingLabel>
 
                             <Form.Label>Images</Form.Label>
-                            <Form.Control type="file" {...register('imgs')} multiple />
-                            
+                            <Form.Control type="file" {...register('productImgs')} multiple />
+
                         </Form.Group>
                         <button type="submit" className="btn_admin">Add Product</button>
                     </Form>

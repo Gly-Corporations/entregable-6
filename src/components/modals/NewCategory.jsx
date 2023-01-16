@@ -16,12 +16,18 @@ const NewCategory = ({ show, setShowFunction }) => {
             .then(res => {
                 dispatch(setTitleModal('Category created successfully'))
                 dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
                 dispatch(getCategoryThunk())
                 setShowFunction(0)
             })
             .catch(err => {
                 dispatch(setTitleModal('Error creating category'))
                 dispatch(setHandleShow(true))
+            setTimeout(() => {
+                dispatch(setHandleShow(false))
+            }, 2000)
                 setShowFunction(0)
             })
     }
