@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoader, setHandleShow, setTitleModal, setLogged } from '../store/slices';
+import { setLoader, setHandleShow, setTitleModal, setLogged, setCart } from '../store/slices';
 import { Accordion } from 'react-bootstrap';
 import NewUser from '../components/modals/NewUser';
 import NewProduct from '../components/modals/NewProduct';
@@ -84,11 +84,12 @@ const Login = () => {
   }
 
   const logout = () => {
-    window.localStorage.removeItem('token')
-    window.localStorage.removeItem('user')
-    dispatch(setLogged(false))
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('user');
+    dispatch(setLogged(false));
     dispatch(setTitleModal('Successful logout'));
-    dispatch(setHandleShow(true))
+    dispatch(setHandleShow(true));
+    dispatch(setCart([]));
         setTimeout(() => {
             dispatch(setHandleShow(false))
         }, 2000);

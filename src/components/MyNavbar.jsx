@@ -3,7 +3,7 @@ import { Container, Nav, Navbar } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setHandleShow, setTitleModal } from '../store/slices';
-import { getSetCart } from '../store/slices/cartList.slice';
+import { getSetCart, setCart } from '../store/slices/cartList.slice';
 import { setLogged } from '../store/slices/logged.slice';
 import Cart from './Cart';
 
@@ -16,11 +16,12 @@ const MyNavbar = () => {
     const handleClose = () => setShow(false)
 
     const logout = () => {
-        window.localStorage.removeItem('token')
-        window.localStorage.removeItem('user')
-        dispatch(setLogged(false))
+        window.localStorage.removeItem('token');
+        window.localStorage.removeItem('user');
+        dispatch(setLogged(false));
         dispatch(setTitleModal('Successful logout'));
-        dispatch(setHandleShow(true))
+        dispatch(setHandleShow(true));
+        dispatch(setCart([]));
             setTimeout(() => {
                 dispatch(setHandleShow(false))
             }, 2000);
