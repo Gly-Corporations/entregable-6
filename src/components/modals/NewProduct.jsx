@@ -22,6 +22,7 @@ const NewProduct = ({ show, setShowFunction }) => {
         formData.append('description', data.description);
         formData.append('stock', data.stock);
         formData.append('categoryId', categorySelected);
+        formData.append('userId', id);
         let i = 1;
         for(const file of data.productImgs) {
             i++;

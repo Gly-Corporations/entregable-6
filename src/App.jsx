@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
@@ -16,11 +16,13 @@ import ModalAlert from './components/ModalAlert'
 import { getRolesThunk } from './store/slices/roles.slice'
 import { setLogged } from './store/slices/logged.slice'
 import { getUsersThunk } from './store/slices/users.slice'
+import LoaderMain from './components/LoaderMain'
 
 function App() {
   const loader = useSelector(state => state.loader)
   const dispatch = useDispatch()
   const token = window.localStorage.getItem('token') ? true : false
+  const [loading, setLoading] = useState(false)
 
 
   useEffect(() => {
@@ -29,10 +31,21 @@ function App() {
     dispatch(getRolesThunk())
     dispatch(getUsersThunk())
     dispatch(setLogged(token))
+    handleLoading()
   }, [token])
+
+  const handleLoading = () => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000)
+  }
 
   return (
     <HashRouter>
+      {
+        loading && <LoaderMain />
+      }
       <ModalAlert />
       {
         loader && <LoadingScreen />
