@@ -756,6 +756,11 @@ li {
     .login-container {
         padding: 0 5rem;
     }
+
+    .loader img {
+        width: 50%;
+        height: 90vh;
+    }
 }
 
 .show {
