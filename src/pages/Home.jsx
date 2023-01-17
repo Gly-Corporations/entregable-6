@@ -13,6 +13,7 @@ const Home = () => {
     const [showFilters, setShowFilters] = useState('')
     const { register, handleSubmit, reset } = useForm()
     const dispatch = useDispatch()
+    const [showMessage, setShowMessage] = useState(false);
 
 
     useEffect(() => {
@@ -21,7 +22,13 @@ const Home = () => {
 
     const searchProduct = productCurrent => {
         const filtered = allProducts.filter(product => product.title.toLowerCase().includes(productCurrent.toLowerCase()))
-        setProductsList(filtered)
+        if (filtered.length >= 1) setProductsList(filtered);
+        if (filtered.length === 0) {
+            setShowMessage(true)
+            setProductsList(allProducts)
+        } else {
+            setShowMessage(false)
+        }
     }
 
     const filteCategory = id => {
@@ -54,8 +61,8 @@ const Home = () => {
     const handleScroll = () => {
         const scroll = window.scrollY
         const btnScrollTop = document.querySelector('.btn-scroll-top')
-        
-        if(btnScrollTop === null) return;
+
+        if (btnScrollTop === null) return;
 
         if (scroll > 100) {
             btnScrollTop.classList.add('show')
@@ -84,6 +91,7 @@ const Home = () => {
                         <Form.Control className='input-search-name' onChange={e => searchProduct(e.target.value)} type="text" placeholder='Search Product' />
                         <span className='material-symbols-outlined btn-search-name' >search</span>
                     </FloatingLabel>
+                    <p className={`message-search ${!showMessage && 'show'}`}>No products found</p>
                 </Form>
                 <button onClick={() => show()} className='btn-showFilters'><span className='material-symbols-outlined btn-showFilters-icon'>filter_alt</span>Filters</button>
                 <section className={`filters-more ${showFilters}`}>
