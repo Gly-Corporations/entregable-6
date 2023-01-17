@@ -29,7 +29,7 @@ const NewProduct = ({ show, setShowFunction }) => {
             formData.append(`img${i}`, file);
         }
         
-        axios.post('http://localhost:1811/api/v1/product', formData, getConfig())
+        axios.post('https://api-ecommerce-production-ca22.up.railway.app/api/v1/product', formData, getConfig())
             .then(res => {
                 console.log(res)
                 reset();
