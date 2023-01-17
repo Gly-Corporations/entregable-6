@@ -45,7 +45,7 @@ const Verify = ({show, user}) => {
             keyboard={false}
         >
             <Modal.Header>
-                <Modal.Title>Delete Category</Modal.Title>
+                <Modal.Title>Verify User</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <h4>You have not verified your email!</h4>
