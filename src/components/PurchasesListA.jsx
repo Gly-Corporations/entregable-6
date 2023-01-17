@@ -6,9 +6,14 @@ const PurchasesListA = ({ product }) => {
 
     const navigate = useNavigate()
 
+    const productSelected = () => {
+        navigate(`/product/${product.productId}`);
+        window.scrollTo(0, 0);
+    }
+
 
     return (
-        <article className="purchases-product" onClick={() => navigate(`/product/${product.id}`)}>
+        <article className="purchases-product" onClick={() => productSelected(product.productId)}>
             <img src={product.product?.productImgs[0]} alt="photo oh the product" />
             <p>{product.product?.title}</p>
             <p className="purchases-product-quantity">{product?.quantity}</p>

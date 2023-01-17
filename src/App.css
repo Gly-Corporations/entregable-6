@@ -28,7 +28,7 @@ li {
     list-style: none;
 }
 
-.overlay{
+.overlay {
     z-index: 999;
 }
 
@@ -128,16 +128,23 @@ li {
 }
 
 .container-products {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: auto;
     gap: 1rem;
-    padding: 0 1rem;
-    justify-content: center;
     position: relative;
+    background-color: #FCFCFC;
     z-index: 1;
 }
 
+.h3-suggestion {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
 .product-card {
+    margin: auto;
     width: 340px;
     height: 480px;
     border: .5px solid var(--blackT);
@@ -248,7 +255,7 @@ li {
     color: var(--white);
 }
 
-.form-container form > p {
+.form-container form>p {
     font-size: 15px;
     margin-top: 2rem;
 }
@@ -334,7 +341,7 @@ li {
     color: var(--black);
     display: flex;
     align-items: center;
-    justify-content: center ;
+    justify-content: center;
     margin: auto;
 }
 
@@ -362,7 +369,8 @@ li {
 
 .purchases-product {
     display: grid;
-    grid-template-columns: .5fr 2fr .5fr 1fr;
+    grid-template-columns: .5fr 2fr .5fr 1fr;;
+    gap: .5rem;
     align-items: center;
     text-align: center;
     cursor: pointer;
@@ -383,9 +391,10 @@ li {
 }
 
 .purchases-product img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
+    width: 50px;
+    height: 60px;
+    object-fit: cover;
+    margin: auto;
 }
 
 .purchases-register {
@@ -406,6 +415,16 @@ li {
     gap: 1.5rem;
     padding: 0 .5rem;
     min-height: calc(100vh - 13.5rem);
+}
+
+.title-purchases {
+    display: grid;
+    grid-template-columns: .5fr 2fr .5fr 1fr;
+    justify-content: center;
+    text-align: center;
+    gap: .5rem;
+    padding: 0;
+    margin: 0;
 }
 
 .cart-container {
@@ -455,10 +474,10 @@ li {
     width: 100%;
     height: 5.5rem;
     background-color: var(--white);
-    position: fixed;
+    position: sticky;
     left: 0;
     bottom: 0;
-    padding: 1rem .5rem .5rem;
+    padding: 0 2rem 1rem;
     border-top: .5px solid var(--blackT);
     display: flex;
     flex-wrap: wrap;
@@ -478,6 +497,7 @@ li {
     background-color: var(--first-color);
     margin: auto;
     color: var(--white);
+    border-radius: .3rem;
 }
 
 .login-container {
@@ -552,17 +572,25 @@ li {
     transition: all 1s ease-in-out;
 }
 
+@media screen and (min-width: 768px) {
+    .container-products {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 @media screen and (min-width: 1024px) {
 
-    .nav-bar{
+    .nav-bar {
         margin: 0;
     }
+
     .main {
         display: grid;
         grid-template-columns: 1fr 5fr;
         padding: 0;
     }
-    .aside-search{
+
+    .aside-search {
         position: sticky;
         top: 5rem;
         width: 300px;
@@ -580,7 +608,7 @@ li {
         right: 0;
         top: 6rem;
     }
-    
+
     .input-search-name {
         width: 45rem !important;
         padding: .5rem;
@@ -599,7 +627,7 @@ li {
     .btn-showFilters {
         display: none;
     }
-    
+
     .btn-filters-price {
         margin: -100px 0 .5rem;
     }
@@ -608,10 +636,14 @@ li {
         margin-top: 6rem;
         margin-bottom: 2rem;
         padding: 0 .5rem;
-        justify-content: left;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        background-color: #FCFCFC;
+        position: relative;
+        padding-top: 1.5rem;
+    }
+
+    .h3-suggestion {
+        margin-bottom: -5rem;
     }
 
     .product-card {
@@ -619,7 +651,7 @@ li {
         height: 510px;
         margin: auto;
     }
-    
+
     .section-total {
         position: absolute;
         width: 399px;
@@ -635,33 +667,21 @@ li {
         gap: 3rem;
     }
 
-    .container-products {
-        position: relative;
-        padding-top: 1.5rem;
-    }
-
-    .container-products h3 {
-        width: 100%;
-        position: absolute;
-        text-align: center;
-        top: -2rem;
-    }
-
     .form-container {
         padding: 0 20rem;
-        width: 90vw;
+        width: 100%;
     }
 
     .purchases-container {
         padding: 0 5rem;
     }
-    
+
     .footer {
-        margin: 0;
+        margin-top: 1.7rem;
     }
 
     .login-container {
-        padding: 0 10rem;
+        padding: 0 5rem;
     }
 }
 

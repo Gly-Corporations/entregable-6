@@ -30,6 +30,12 @@ const PurchasesList = ({ listProducts, purchase }) => {
             <article className='purchases-register-date'>
                 <b>{fecha()}</b>
             </article>
+            <ul className="title-purchases">
+                <li></li>
+                <li>Name</li>
+                <li>Quantity</li>
+                <li>Total</li>
+            </ul>
             {
                 listProducts.map(product => (
                     <PurchasesListA key={product.id} product={product}/>

@@ -40,9 +40,9 @@ const Cart = ({ show, handleClose }) => {
                 dispatch(getSetCart(user.id))
                 dispatch(setTitleModal('Removed product'))
                 dispatch(setHandleShow(true))
-            setTimeout(() => {
-                dispatch(setHandleShow(false))
-            }, 2000)
+                setTimeout(() => {
+                    dispatch(setHandleShow(false))
+                }, 2000)
             })
             .catch(error => console.log(error))
             .finally(() => {
@@ -52,7 +52,7 @@ const Cart = ({ show, handleClose }) => {
     }
 
     const pucharse = () => {
-        if(!user.id){
+        if (!user.id) {
             navigate('/login')
             handleClose()
         }
@@ -89,14 +89,14 @@ const Cart = ({ show, handleClose }) => {
                         ))
                     }
                 </ul>
-                <section className='section-total'>
-                    <article className='container-total'>
-                        <span>Total:</span>
-                        <b>$ {total()}</b>
-                    </article>
-                    <button className='btn-buy' onClick={pucharse}>Checkout</button>
-                </section>
             </Offcanvas.Body>
+            <section className='section-total'>
+                <article className='container-total'>
+                    <span>Total:</span>
+                    <b>$ {total()}</b>
+                </article>
+                <button className='btn-buy' onClick={pucharse}>Checkout</button>
+            </section>
         </Offcanvas>
     );
 };

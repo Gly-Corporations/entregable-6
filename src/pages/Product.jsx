@@ -12,7 +12,7 @@ const Product = () => {
     const [quantity, setQuantity] = useState(1)
     const cartProducts = useSelector(state => state.cart)
     const token = window.localStorage.getItem('token')
-    const user = JSON.parse(localStorage.getItem('user'))  || {}
+    const user = JSON.parse(localStorage.getItem('user')) || {}
 
     const productCurrent = products.find(product => product.id === Number(id))
     const productsCategories = products.filter(product => product.category.id === productCurrent.category.id)
@@ -84,8 +84,8 @@ const Product = () => {
                     <p className='detail-product'>{productCurrent?.description}</p>
                 </article>
             </section>
+            <h3 className='h3-suggestion'>Suggestions</h3>
             <section className='container-products'>
-                <h3>Suggestions</h3>
                 {
                     productsCategories.map(product => (
                         <article className='product-card' key={product.id} onClick={() => productSelected(product.id)}>
