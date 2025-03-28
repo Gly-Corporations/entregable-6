@@ -15,7 +15,7 @@ const Verify = ({ show, user }) => {
   const submit = data => {
     data.codeVerify = Number(data.codeVerify);
     axios
-      .put(`https://api-ecommerce-production-8b50.up.railway.app/api/v1/user/${id}/verify`, data, getConfig())
+      .put(`https://api-ecommerce.alfauzcat.com/api/v1/user/${id}/verify`, data, getConfig())
       .then(res => {
         dispatch(setTitleModal('Successful verification'));
         dispatch(setHandleShow(true));

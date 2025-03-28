@@ -15,7 +15,7 @@ export const roleSlice = createSlice({
 export const getRolesThunk = () => dispatch => {
   dispatch(setLoader(true));
   return axios
-    .get('https://api-ecommerce-production-8b50.up.railway.app/api/v1/roles')
+    .get('https://api-ecommerce.alfauzcat.com/api/v1/roles')
     .then(res => dispatch(setRole(res.data)))
     .finally(() => dispatch(setLoader(false)));
 };

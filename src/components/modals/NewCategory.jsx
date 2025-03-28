@@ -13,7 +13,7 @@ const NewCategory = ({ show, setShowFunction }) => {
 
   const submit = data => {
     axios
-      .post('https://api-ecommerce-production-8b50.up.railway.app/api/v1/category', data, getConfig())
+      .post('https://api-ecommerce.alfauzcat.com/api/v1/category', data, getConfig())
       .then(res => {
         dispatch(setTitleModal('Category created successfully'));
         dispatch(setHandleShow(true));

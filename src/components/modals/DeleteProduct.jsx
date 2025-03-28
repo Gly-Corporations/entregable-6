@@ -28,7 +28,7 @@ const DeleteProduct = ({ show, setShowFunction }) => {
     }
 
     axios
-      .delete(`https://api-ecommerce-production-8b50.up.railway.app/api/v1/product/${productNumber}/delete`, getConfig())
+      .delete(`https://api-ecommerce.alfauzcat.com/api/v1/product/${productNumber}/delete`, getConfig())
       .then(() => {
         dispatch(setTitleModal('Deleted product'));
         dispatch(setHandleShow(true));

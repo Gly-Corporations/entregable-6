@@ -13,7 +13,7 @@ const NewRole = ({ show, setShowFunction }) => {
 
   const submit = data => {
     axios
-      .post('https://api-ecommerce-production-8b50.up.railway.app/api/v1/role', data, getConfig())
+      .post('https://api-ecommerce.alfauzcat.com/api/v1/role', data, getConfig())
       .then(() => {
         dispatch(setTitleModal('Created role'));
         dispatch(setHandleShow(true));

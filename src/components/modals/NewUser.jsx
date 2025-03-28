@@ -18,7 +18,7 @@ const NewUser = ({ show, setShowFunction }) => {
   const submit = data => {
     data.role = Number(role);
     axios
-      .post('https://api-ecommerce-production-8b50.up.railway.app/api/v1/user', data)
+      .post('https://api-ecommerce.alfauzcat.com/api/v1/user', data)
       .then(res => {
         console.log(res.data);
         reset();

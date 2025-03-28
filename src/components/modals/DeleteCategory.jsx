@@ -23,7 +23,7 @@ const DeleteCategory = ({ show, setShowFunction }) => {
     }
 
     axios
-      .delete(`https://api-ecommerce-production-8b50.up.railway.app/api/v1/category/${categoryNumber}`, getConfig())
+      .delete(`https://api-ecommerce.alfauzcat.com/api/v1/category/${categoryNumber}`, getConfig())
       .then(() => {
         dispatch(setTitleModal('Deleted category'));
         dispatch(setHandleShow(true));

@@ -29,7 +29,7 @@ const NewProduct = ({ show, setShowFunction }) => {
     }
 
     axios
-      .post('https://api-ecommerce-production-8b50.up.railway.app/api/v1/product', formData, getConfig())
+      .post('https://api-ecommerce.alfauzcat.com/api/v1/product', formData, getConfig())
       .then(res => {
         console.log(res);
         reset();

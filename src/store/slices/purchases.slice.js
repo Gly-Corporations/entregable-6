@@ -16,7 +16,7 @@ export const purchasesSlice = createSlice({
 export const getPurchasesThunk = userId => dispatch => {
   dispatch(setLoader(true));
   return axios
-    .get(`https://api-ecommerce-production-8b50.up.railway.app/api/v1/user/${userId}/purchases`, getConfig())
+    .get(`https://api-ecommerce.alfauzcat.com/api/v1/user/${userId}/purchases`, getConfig())
     .then(res => dispatch(setPurchases(res.data)))
     .finally(() => dispatch(setLoader(false)));
 };

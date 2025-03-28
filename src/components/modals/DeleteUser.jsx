@@ -22,7 +22,7 @@ const DeleteUser = ({ show, setShowFunction }) => {
       return;
     }
 
-    axios.delete(`https://api-ecommerce-production-8b50.up.railway.app/api/v1/user/${userSelected}`, getConfig()).then(() => {
+    axios.delete(`https://api-ecommerce.alfauzcat.com/api/v1/user/${userSelected}`, getConfig()).then(() => {
       dispatch(setTitleModal('Deleted user'));
       dispatch(setHandleShow(true));
       setTimeout(() => {

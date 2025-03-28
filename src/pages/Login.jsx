@@ -35,7 +35,7 @@ const Login = () => {
 
   const submit = userData => {
     axios
-      .post('https://api-ecommerce-production-8b50.up.railway.app/api/v1/login', userData)
+      .post('https://api-ecommerce.alfauzcat.com/api/v1/login', userData)
       .then(res => {
         window.localStorage.setItem('token', res.data.token);
         window.localStorage.setItem('user', JSON.stringify(res.data.user));
@@ -56,7 +56,7 @@ const Login = () => {
 
   const userRegister = newUser => {
     axios
-      .post('https://api-ecommerce-production-8b50.up.railway.app/api/v1/user', newUser)
+      .post('https://api-ecommerce.alfauzcat.com/api/v1/user', newUser)
       .then(() => {
         dispatch(setTitleModal('Successful registration'));
         dispatch(setHandleShow(true));

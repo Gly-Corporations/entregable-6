@@ -36,7 +36,7 @@ const Cart = ({ show, handleClose }) => {
 
   const deleteItem = id => {
     axios
-      .delete(`https://api-ecommerce-production-8b50.up.railway.app/api/v1/user/cart/product/${id}`, getConfig())
+      .delete(`https://api-ecommerce.alfauzcat.com/api/v1/user/cart/product/${id}`, getConfig())
       .then(() => {
         dispatch(getSetCart(user.id));
         dispatch(setTitleModal('Removed product'));
